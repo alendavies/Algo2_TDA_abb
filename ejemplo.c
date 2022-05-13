@@ -77,7 +77,7 @@ int main()
 	cosa *c5 = crear_cosa(5);
 	cosa *c6 = crear_cosa(6);
 	cosa *c7 = crear_cosa(7);
-	//cosa *auxiliar = crear_cosa(0);
+	cosa *auxiliar = crear_cosa(0);
 
 	abb_insertar(arbol, c4);
 	abb_insertar(arbol, c2);
@@ -90,7 +90,7 @@ int main()
 	printf("El arbol tiene %zu elementos, debería tener 7\n",
 	       abb_tamanio(arbol));
 
-	/* auxiliar->clave = 5;
+	auxiliar->clave = 5;
 	printf("Busco el elemento 5: %s\n",
 	       abb_buscar(arbol, auxiliar) == c5 ? "OK" : "ERROR");
 
@@ -130,7 +130,7 @@ int main()
 	printf("Busco el elemento 3: %s\n",
 	       abb_buscar(arbol, auxiliar) == c3 ? "OK" : "ERROR");
 
-	destruir_cosa(auxiliar); */
+	destruir_cosa(auxiliar);
 
 	cosa *elementos[10];
 

@@ -102,9 +102,72 @@ void quito_un_elemento_y_lo_devuelvo()
 	abb_destruir(abb);
 }
 
-void recorro_inorden_y_devuelve_la_cantidad_esperada()
+void recorro_el_arbol_y_devuelve_la_cantidad_esperada()
 {
+	abb_t *abb = abb_crear(comparador);
+	int a = 10, b = 20, c = 8, d = 15, f = 9, g = 25, h = 7;
+
+	int *elementos[10];
+
+	pa2m_afirmar(abb_recorrer(NULL, INORDEN, (void **)elementos, 10) == 0, "No puedo recorrer un arbol nulo.");
+	pa2m_afirmar(abb_recorrer(abb, INORDEN, (void **)elementos, 10) == 0, "No puedo recorrer un arbol vacío.");
+
+	abb_insertar(abb, &a);
+	abb_insertar(abb, &b);
+	abb_insertar(abb, &c);
+	abb_insertar(abb, &d);
+	abb_insertar(abb, &f);
+	abb_insertar(abb, &g);
+	abb_insertar(abb, &h);
+
+	pa2m_afirmar(abb_recorrer(abb, PREORDEN, (void **)elementos, 10) == 7, "Recorro el arbol preorden y me devuelve la cantidad de elementos recorridos.");
+
+	int inorden[] = {7, 8, 9, 10, 15, 20, 25};
+
+	bool recorrido_esperado = true;
+
+	size_t cantidad = abb_recorrer(abb, INORDEN, (void **)elementos, 10);
+
+	for (size_t i = 0; i < cantidad; i++){
+		if(*(int *)elementos[i] != inorden[i]){
+			recorrido_esperado = false;
+		}
+	}
+
+	pa2m_afirmar(recorrido_esperado, "Recorro el arbol inorden y el orden es el esperado.");
+
+	int preorden[] = {10, 7, 8, 9, 15, 20, 25};
+
+	pa2m_afirmar(abb_recorrer(abb, INORDEN, (void **)elementos, 10) == 7, "Recorro el arbol inorden y me devuelve la cantidad de elementos recorridos.");
+
+	recorrido_esperado = true;
+
+	cantidad = abb_recorrer(abb, PREORDEN, (void **)elementos, 10);
+
+	for (size_t i = 0; i < cantidad; i++){
+		if(*(int *)elementos[i] != preorden[i]){
+			recorrido_esperado = false;
+		}
+	}
+	pa2m_afirmar(recorrido_esperado, "Recorro el arbol preorden y el orden es el esperado.");
+
+	int postorden[] = {7, 8, 9, 15, 20, 25, 10};
+
+	pa2m_afirmar(abb_recorrer(abb, POSTORDEN, (void **)elementos, 10) == 7, "Recorro el arbol postorden y me devuelve la cantidad de elementos recorridos.");
+
+	recorrido_esperado = true;
+
+	cantidad = abb_recorrer(abb, POSTORDEN, (void **)elementos, 10);
+
+	for (size_t i = 0; i < cantidad; i++){
+		if(*(int *)elementos[i] != postorden[i]){
+			recorrido_esperado = false;
+		}
+	}
 	
+	pa2m_afirmar(recorrido_esperado, "Recorro el arbol postorden y el orden es el esperado.");
+
+	abb_destruir(abb);
 }
 
 int main()
@@ -124,7 +187,7 @@ int main()
 	quito_un_elemento_y_lo_devuelvo();
 
 	pa2m_nuevo_grupo("Pruebas de recorrer");
-	recorro_inorden_y_devuelve_la_cantidad_esperada();
+	recorro_el_arbol_y_devuelve_la_cantidad_esperada();
 
 	pa2m_nuevo_grupo("Pruebas de iterador interno");
 

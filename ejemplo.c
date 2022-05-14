@@ -77,7 +77,7 @@ int main()
 	cosa *c5 = crear_cosa(5);
 	cosa *c6 = crear_cosa(6);
 	cosa *c7 = crear_cosa(7);
-	cosa *auxiliar = crear_cosa(0);
+	//cosa *auxiliar = crear_cosa(0);
 
 	abb_insertar(arbol, c4);
 	abb_insertar(arbol, c2);
@@ -90,7 +90,7 @@ int main()
 	printf("El arbol tiene %zu elementos, debería tener 7\n",
 	       abb_tamanio(arbol));
 
-	auxiliar->clave = 5;
+	/* auxiliar->clave = 5;
 	printf("Busco el elemento 5: %s\n",
 	       abb_buscar(arbol, auxiliar) == c5 ? "OK" : "ERROR");
 
@@ -130,16 +130,15 @@ int main()
 	printf("Busco el elemento 3: %s\n",
 	       abb_buscar(arbol, auxiliar) == c3 ? "OK" : "ERROR");
 
-	destruir_cosa(auxiliar);
+	destruir_cosa(auxiliar); */
 
-	cosa *elementos[10];
+	/* cosa *elementos[10];
 
 	printf("Recorrido inorden (deberian salir en orden 1 3 5): ");
 	size_t cantidad = abb_recorrer(arbol, INORDEN, (void **)elementos, 10);
-	printf("\ncantidad: %li\n", cantidad);
 	for (size_t i = 0; i < cantidad; i++)
 		printf("%i ", elementos[i]->clave);
-	printf("\n");
+	printf("\n"); */
 
 	/* printf("\n\nInserto mas valores y pruebo el iterador interno\n\n");
 	abb_insertar(arbol, crear_cosa(15));

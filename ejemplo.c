@@ -140,7 +140,7 @@ int main()
 		printf("%i ", elementos[i]->clave);
 	printf("\n"); */
 
-	/* printf("\n\nInserto mas valores y pruebo el iterador interno\n\n");
+	printf("\n\nInserto mas valores y pruebo el iterador interno\n\n");
 	abb_insertar(arbol, crear_cosa(15));
 	abb_insertar(arbol, crear_cosa(0));
 	abb_insertar(arbol, crear_cosa(9));
@@ -184,7 +184,7 @@ int main()
 	acumulador = 0;
 	printf("Recorrido postorden acumulando los valores: ");
 	abb_con_cada_elemento(arbol, POSTORDEN, mostrar_acumulado, &acumulador);
-	printf("\n\n"); */
+	printf("\n\n");
 
 	abb_destruir_todo(arbol, destructor_de_cosas);
 	return 0;

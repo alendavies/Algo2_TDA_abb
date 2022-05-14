@@ -81,5 +81,7 @@ int main()
 	pa2m_nuevo_grupo("Pruebas de buscar");
 	busco_un_elemento_y_si_lo_encuentra_lo_devuelve();
 
+	pa2m_nuevo_grupo("Pruebas de quitar");
+
 	return pa2m_mostrar_reporte();
 }

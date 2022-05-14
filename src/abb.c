@@ -48,45 +48,35 @@ abb_t *abb_insertar(abb_t *arbol, void *elemento)
 	return arbol;
 }
 
-nodo_abb_t *extraer_nodo(nodo_abb_t *raiz, nodo_abb_t **quitado)
-{
-	if(!raiz->derecha){
-		*quitado = raiz;
-		return raiz->izquierda;
-	}
-	raiz->derecha = extraer_nodo(raiz->derecha, quitado);
-
-	return raiz;
-}
-
 void *nodo_abb_quitar(nodo_abb_t *raiz, void *elemento, abb_comparador comparador)
 {
 	if(!raiz){
 		return NULL;
 	}
-	nodo_abb_t *der = raiz->derecha;
-	nodo_abb_t *izq = raiz->izquierda;
 
 	if(comparador(elemento, raiz->elemento) == 0){
-		
-		if(raiz->derecha && raiz->izquierda){
-			nodo_abb_t *quitado = NULL;
-			raiz->izquierda = extraer_nodo(raiz->izquierda, &quitado);
-			raiz->elemento = quitado->elemento;
-			free(quitado);
-			return raiz;
+
+		if(raiz->derecha && raiz->izquierda){ //TENGO 2 HIJOS
+
 		}
-		if(der){
-			free(raiz->derecha);
-			return der;
+		else{ //TENGO 1 O 0 HIJO
+			nodo_abb_t *hijo = NULL;
+			if(raiz->derecha){
+				hijo = raiz->derecha;
+			}
+			else if(raiz->izquierda){
+				hijo = raiz->izquierda;
+			}
+			free(raiz);
+			return hijo;
 		}
-		free(raiz->izquierda);
-		return izq;
 	}
-	if(comparador(elemento, raiz->elemento) < 0){
+	else if(comparador(elemento, raiz->elemento) < 0){
 		raiz->izquierda = nodo_abb_quitar(raiz->izquierda, elemento, comparador);
 	}
-	raiz->derecha = nodo_abb_quitar(raiz->derecha, elemento, comparador);
+	else{
+		raiz->derecha = nodo_abb_quitar(raiz->derecha, elemento, comparador);
+	}
 
 	return raiz;
 }
@@ -141,9 +131,23 @@ size_t abb_tamanio(abb_t *arbol)
 	return arbol->tamanio;
 }
 
+void nodo_abb_destruir(nodo_abb_t *raiz)
+{
+	if(!raiz){
+		return;
+	}
+	nodo_abb_destruir(raiz->derecha);
+	nodo_abb_destruir(raiz->izquierda);
+	free(raiz);
+}
+
 void abb_destruir(abb_t *arbol)
 {
-	abb_destruir_todo(arbol, free);
+	if(!arbol){
+		return;
+	}
+	nodo_abb_destruir(arbol->nodo_raiz);
+	free(arbol);
 }
 
 void nodo_abb_destruir_todo(nodo_abb_t *raiz, void (*destructor)(void *))
@@ -154,8 +158,6 @@ void nodo_abb_destruir_todo(nodo_abb_t *raiz, void (*destructor)(void *))
 	nodo_abb_destruir_todo(raiz->izquierda, destructor);
 	nodo_abb_destruir_todo(raiz->derecha, destructor);
 	destructor(raiz->elemento);
-
-	free(raiz);
 }
 
 void abb_destruir_todo(abb_t *arbol, void (*destructor)(void *))
@@ -163,10 +165,10 @@ void abb_destruir_todo(abb_t *arbol, void (*destructor)(void *))
 	if(!arbol){
 		return;
 	}
-	if(!destructor){
-		abb_destruir(arbol);
+	if(destructor){
+		nodo_abb_destruir_todo(arbol->nodo_raiz, destructor);
 	}
-	nodo_abb_destruir_todo(arbol->nodo_raiz,destructor);
+	abb_destruir(arbol);
 }
 
 void abb_con_cada_elemento_inorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)

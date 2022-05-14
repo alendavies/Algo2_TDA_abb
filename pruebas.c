@@ -3,7 +3,8 @@
 #include "pa2mm.h"
 #include "string.h"
 
-int comparador(void* elem1, void* elem2){
+int comparador(void* elem1, void* elem2)
+{
 
 	int* elemento1 = elem1;
 	int* elemento2 = elem2;
@@ -11,7 +12,8 @@ int comparador(void* elem1, void* elem2){
 	return *elemento1 - *elemento2;
 }
 
-void al_crear_un_arbol_devuelve_un_arbol_vacio_con_raiz_nula(){
+void al_crear_un_arbol_devuelve_un_arbol_vacio_con_raiz_nula()
+{
 	
 	abb_t *abb = abb_crear(comparador);
 
@@ -22,7 +24,8 @@ void al_crear_un_arbol_devuelve_un_arbol_vacio_con_raiz_nula(){
 	abb_destruir(abb);
 }
 
-void inserto_un_elemento_y_aumenta_el_tamanio_del_arbol(){
+void inserto_un_elemento_y_aumenta_el_tamanio_del_arbol()
+{
 
 	abb_t *abb = abb_crear(comparador);
 	int a = 10, b = 20, c = 8; 
@@ -47,8 +50,8 @@ void inserto_un_elemento_y_aumenta_el_tamanio_del_arbol(){
 	abb_destruir(abb);
 }
 
-void busco_un_elemento_y_si_lo_encuentra_lo_devuelve(){
-
+void busco_un_elemento_y_si_lo_encuentra_lo_devuelve()
+{
 	abb_t *abb = abb_crear(comparador);
 	int a = 10, b = 20, c = 8, d = 15;
 
@@ -64,8 +67,44 @@ void busco_un_elemento_y_si_lo_encuentra_lo_devuelve(){
 
 	pa2m_afirmar(abb_buscar(abb, &d) == NULL, "Busco un elemento en el árbol, no lo encuentra y devuelve NULL.");
 	
+	abb_destruir(abb);
+}
+
+void quito_un_elemento_y_lo_devuelvo()
+{
+	abb_t *abb = abb_crear(comparador);
+	int a = 10, b = 20, c = 8, d = 15, e = 5, f = 9, g = 25, h = 7;
+
+	pa2m_afirmar(abb_quitar(NULL, &a) == NULL, "No puedo quitar un elemento en un arbol nulo.");
+	pa2m_afirmar(abb_quitar(abb, &a) == NULL, "No puedo quitar un elemento en un arbol vacío.");
+
+	abb_insertar(abb, &a);
+	abb_insertar(abb, &b);
+	abb_insertar(abb, &c);
+	abb_insertar(abb, &d);
+	abb_insertar(abb, &e);
+	abb_insertar(abb, &f);
+	abb_insertar(abb, &g);
+	abb_insertar(abb, &h);
+
+	pa2m_afirmar(*(int *)abb_quitar(abb, &f) == f, "Quito un nodo sin hijos y devuelve su elemento.");
+	pa2m_afirmar(abb->tamanio == 7, "Disminuye el tamaño del arbol.");
+
+	pa2m_afirmar(*(int *)abb_quitar(abb, &h) == h, "Quito un nodo con un hijo y devuelve su elemento.");
+	pa2m_afirmar(abb->tamanio == 6, "Disminuye el tamaño del arbol.");
+
+	/* pa2m_afirmar(*(int *)abb_quitar(abb, &b) == b, "Quito un nodo con dos hijos y devuelve su elemento.");
+	pa2m_afirmar(abb->tamanio == 5, "Disminuye el tamaño del arbol.");
+
+	pa2m_afirmar(*(int *)abb_quitar(abb, &a) == a, "Quito otro nodo con dos hijos y devuelve su elemento.");
+	pa2m_afirmar(abb->tamanio == 4, "Disminuye el tamaño del arbol."); */
 
 	abb_destruir(abb);
+}
+
+void recorro_inorden_y_devuelve_la_cantidad_esperada()
+{
+	
 }
 
 int main()
@@ -82,6 +121,12 @@ int main()
 	busco_un_elemento_y_si_lo_encuentra_lo_devuelve();
 
 	pa2m_nuevo_grupo("Pruebas de quitar");
+	quito_un_elemento_y_lo_devuelvo();
+
+	pa2m_nuevo_grupo("Pruebas de recorrer");
+	recorro_inorden_y_devuelve_la_cantidad_esperada();
+
+	pa2m_nuevo_grupo("Pruebas de iterador interno");
 
 	return pa2m_mostrar_reporte();
 }

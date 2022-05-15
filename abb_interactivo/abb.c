@@ -48,13 +48,13 @@ abb_t *abb_insertar(abb_t *arbol, void *elemento)
 	return arbol;
 }
 
-void *nodo_mas_derecho(nodo_abb_t *raiz, nodo_abb_t **mas_derecho)
+void *nodo_mas_derecho(nodo_abb_t *raiz, nodo_abb_t **extraido)
 {
 	if(!raiz->derecha){
-		*mas_derecho = raiz;
+		*extraido = raiz;
 		return raiz->izquierda;
 	}
-	raiz->derecha = nodo_mas_derecho(raiz->derecha, mas_derecho);
+	raiz->derecha = nodo_mas_derecho(raiz->derecha, extraido);
 	return raiz;
 }
 
@@ -67,13 +67,13 @@ nodo_abb_t *nodo_abb_quitar(nodo_abb_t *raiz, void *elemento, abb_comparador com
 	if(comparador(elemento, raiz->elemento) == 0){
 
 		if(raiz->derecha && raiz->izquierda){
-			nodo_abb_t *predecesor = NULL;
-			nodo_mas_derecho(raiz->izquierda, &predecesor);
+			nodo_abb_t *extraido = NULL;
+			raiz->izquierda = nodo_mas_derecho(raiz->izquierda, &extraido);
 			*eliminado = raiz->elemento;
-			predecesor->derecha = raiz->derecha;
-			predecesor->izquierda = raiz->izquierda;
+			raiz->elemento = extraido->elemento;
 			(*tamanio)--;
-			free(raiz);
+			free(extraido);
+			return raiz;
 		}
 		else{
 			nodo_abb_t *hijo = NULL;
@@ -84,8 +84,8 @@ nodo_abb_t *nodo_abb_quitar(nodo_abb_t *raiz, void *elemento, abb_comparador com
 				hijo = raiz->izquierda;
 			}
 			*eliminado = raiz->elemento;
-			free(raiz);
 			(*tamanio)--;
+			free(raiz);
 			return hijo;
 		}
 	}
@@ -100,7 +100,7 @@ nodo_abb_t *nodo_abb_quitar(nodo_abb_t *raiz, void *elemento, abb_comparador com
 
 void *abb_quitar(abb_t *arbol, void *elemento)
 {	
-	if(!arbol){
+	if(!arbol || abb_vacio(arbol)){
 		return NULL;
 	}
 	void *eliminado = NULL;
@@ -150,6 +150,21 @@ size_t abb_tamanio(abb_t *arbol)
 	return arbol->tamanio;
 }
 
+void nodo_abb_destruir_todo(nodo_abb_t *raiz, void (*destructor)(void *))
+{
+	if(!raiz){
+		return;
+	}
+	if(raiz->izquierda)
+		nodo_abb_destruir_todo(raiz->izquierda, destructor);
+	if(raiz->derecha)
+		nodo_abb_destruir_todo(raiz->derecha, destructor);
+	if(destructor){
+		destructor(raiz->elemento);
+	}
+	free(raiz);
+}
+
 void nodo_abb_destruir(nodo_abb_t *raiz)
 {
 	if(!raiz){
@@ -165,28 +180,17 @@ void abb_destruir(abb_t *arbol)
 	if(!arbol){
 		return;
 	}
-	nodo_abb_destruir(arbol->nodo_raiz);
+	nodo_abb_destruir_todo(arbol->nodo_raiz, NULL);
 	free(arbol);
 }
 
-void nodo_abb_destruir_todo(nodo_abb_t *raiz, void (*destructor)(void *))
-{
-	if(!raiz){
-		return;
-	}
-	nodo_abb_destruir_todo(raiz->izquierda, destructor);
-	nodo_abb_destruir_todo(raiz->derecha, destructor);
-	destructor(raiz->elemento);
-}
 
 void abb_destruir_todo(abb_t *arbol, void (*destructor)(void *))
 {
 	if(!arbol){
 		return;
 	}
-	if(destructor){
-		nodo_abb_destruir_todo(arbol->nodo_raiz, destructor);
-	}
+	nodo_abb_destruir_todo(arbol->nodo_raiz, destructor);
 	abb_destruir(arbol);
 }
 

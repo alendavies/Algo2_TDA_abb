@@ -50,6 +50,32 @@ void inserto_un_elemento_y_aumenta_el_tamanio_del_arbol()
 	abb_destruir(abb);
 }
 
+void inserto_elementos_y_estan_en_la_posicion_correcta()
+{
+	abb_t *abb = abb_crear(comparador);
+	int a = 10, b = 20, c = 8, d = 15, e = 5, f = 9, g = 25, h = 7;
+
+	abb_insertar(abb, &a);
+	abb_insertar(abb, &b);
+	abb_insertar(abb, &c);
+	abb_insertar(abb, &d);
+	abb_insertar(abb, &e);
+	abb_insertar(abb, &f);
+	abb_insertar(abb, &g);
+	abb_insertar(abb, &h);
+
+	pa2m_afirmar(*(int *)abb->nodo_raiz->elemento == 10, "La raíz es 10.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->izquierda->elemento == 8, "El izquierdo es 8.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->derecha->elemento == 20, "El derecho es 20.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->izquierda->izquierda->elemento == 5, "El izquierdo izquierdo es 5.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->izquierda->izquierda->derecha->elemento == 7, "El izquierdo izquierdo derecho es 7.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->izquierda->derecha->elemento == 9, "El izquierdo derecho es 9.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->derecha->izquierda->elemento == 15, "El derecho izquierdo es 15.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->derecha->derecha->elemento == 25, "El derecho derecho es 25.");
+
+	abb_destruir(abb);
+}
+
 void busco_un_elemento_y_si_lo_encuentra_lo_devuelve()
 {
 	abb_t *abb = abb_crear(comparador);
@@ -90,14 +116,20 @@ void quito_un_elemento_y_lo_devuelvo()
 	pa2m_afirmar(*(int *)abb_quitar(abb, &f) == f, "Quito un nodo sin hijos y devuelve su elemento.");
 	pa2m_afirmar(abb->tamanio == 7, "Disminuye el tamaño del arbol.");
 
-	pa2m_afirmar(*(int *)abb_quitar(abb, &h) == h, "Quito un nodo con un hijo y devuelve su elemento.");
+	pa2m_afirmar(*(int *)abb_quitar(abb, &c) == c, "Quito un nodo con un hijo y devuelve su elemento.");
 	pa2m_afirmar(abb->tamanio == 6, "Disminuye el tamaño del arbol.");
 
-	/* pa2m_afirmar(*(int *)abb_quitar(abb, &b) == b, "Quito un nodo con dos hijos y devuelve su elemento.");
+	pa2m_afirmar(*(int *)abb_quitar(abb, &b) == b, "Quito un nodo con dos hijos y devuelve su elemento.");
 	pa2m_afirmar(abb->tamanio == 5, "Disminuye el tamaño del arbol.");
 
 	pa2m_afirmar(*(int *)abb_quitar(abb, &a) == a, "Quito otro nodo con dos hijos y devuelve su elemento.");
-	pa2m_afirmar(abb->tamanio == 4, "Disminuye el tamaño del arbol."); */
+	pa2m_afirmar(abb->tamanio == 4, "Disminuye el tamaño del arbol.");
+
+	pa2m_afirmar(*(int *)abb->nodo_raiz->elemento == 7, "La raíz ahora es 7.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->izquierda->elemento == 5, "El izquierdo ahora es 5.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->derecha->elemento == 15, "El derecho ahora es 15.");
+	pa2m_afirmar(*(int *)abb->nodo_raiz->derecha->derecha->elemento == 25, "El derecho derecho ahora es 25.");
+	
 
 	abb_destruir(abb);
 }
@@ -179,6 +211,7 @@ int main()
 
 	pa2m_nuevo_grupo("Pruebas de insertar");
 	inserto_un_elemento_y_aumenta_el_tamanio_del_arbol();
+	inserto_elementos_y_estan_en_la_posicion_correcta();
 
 	pa2m_nuevo_grupo("Pruebas de buscar");
 	busco_un_elemento_y_si_lo_encuentra_lo_devuelve();

@@ -5,11 +5,27 @@
 
 int comparador(void* elem1, void* elem2)
 {
-
 	int* elemento1 = elem1;
 	int* elemento2 = elem2;
 
 	return *elemento1 - *elemento2;
+}
+
+bool encontro_elemento(void *elemento, void *extra)
+{
+	if(elemento){
+		if((*(int *)elemento) == 5)
+			return false;
+	}
+	return true;
+}
+
+bool recorre_acumulando(void *elemento, void *extra)
+{
+	if (elemento && extra) {
+		*(int *)extra += (*(int *)elemento);
+	}
+	return true;
 }
 
 void al_crear_un_arbol_devuelve_un_arbol_vacio_con_raiz_nula()
@@ -202,6 +218,56 @@ void recorro_el_arbol_y_devuelve_la_cantidad_esperada()
 	abb_destruir(abb);
 }
 
+void itera_hasta_encontrar_un_elemento_y_corta()
+{
+	abb_t *abb = abb_crear(comparador);
+	int a = 3, b = 1, c = 2, d = 5, e = 4, f = 15, g = 9, h = 7;
+
+	pa2m_afirmar(abb_con_cada_elemento(NULL, INORDEN, encontro_elemento, NULL) == 0, "No puedo iterar en un arbol nulo.");
+	pa2m_afirmar(abb_con_cada_elemento(abb, INORDEN, encontro_elemento, NULL) == 0, "No puedo iterar en un arbol vacío.");
+	pa2m_afirmar(abb_con_cada_elemento(abb, INORDEN, NULL, NULL) == 0, "No puedo iterar con funcion nula.");
+
+	abb_insertar(abb, &a);
+	abb_insertar(abb, &b);
+	abb_insertar(abb, &c);
+	abb_insertar(abb, &d);
+	abb_insertar(abb, &e);
+	abb_insertar(abb, &f);
+	abb_insertar(abb, &g);
+	abb_insertar(abb, &h);
+
+	pa2m_afirmar(abb_con_cada_elemento(abb, INORDEN, encontro_elemento, NULL) == 4, "Itero inorden hasta encontrar el elemento.");
+	pa2m_afirmar(abb_con_cada_elemento(abb, PREORDEN, encontro_elemento, NULL) == 3, "Itero preorden hasta encontrar el elemento.");
+	pa2m_afirmar(abb_con_cada_elemento(abb, POSTORDEN, encontro_elemento, NULL) == 6, "Itero postorden hasta encontrar el elemento.");
+
+	abb_destruir(abb);
+}
+
+void itera_todo_el_arbol_y_devuelve_el_numero_de_elementos()
+{
+	abb_t *abb = abb_crear(comparador);
+	int a = 3, b = 1, c = 2, d = 5, e = 4, f = 15, g = 9, h = 7;
+
+	abb_insertar(abb, &a);
+	abb_insertar(abb, &b);
+	abb_insertar(abb, &c);
+	abb_insertar(abb, &d);
+	abb_insertar(abb, &e);
+	abb_insertar(abb, &f);
+	abb_insertar(abb, &g);
+	abb_insertar(abb, &h);
+
+	int acumulador = 0;
+
+	pa2m_afirmar(abb_con_cada_elemento(abb, INORDEN, recorre_acumulando, &acumulador) == 8, "itero inorden acumulando valores y me devuelve la cantidad de elementos en el arbol.");
+	acumulador = 0;
+	pa2m_afirmar(abb_con_cada_elemento(abb, PREORDEN, recorre_acumulando, &acumulador) == 8, "itero preorden acumulando valores y me devuelve la cantidad de elementos en el arbol.");
+	acumulador = 0;
+	pa2m_afirmar(abb_con_cada_elemento(abb, POSTORDEN, recorre_acumulando, &acumulador) == 8, "itero postorden acumulando valores y me devuelve la cantidad de elementos en el arbol.");
+
+	abb_destruir(abb);
+}
+
 int main()
 {
 	pa2m_nuevo_grupo("Pruebas de ABB");
@@ -223,6 +289,8 @@ int main()
 	recorro_el_arbol_y_devuelve_la_cantidad_esperada();
 
 	pa2m_nuevo_grupo("Pruebas de iterador interno");
+	itera_hasta_encontrar_un_elemento_y_corta();
+	itera_todo_el_arbol_y_devuelve_el_numero_de_elementos();
 
 	return pa2m_mostrar_reporte();
 }

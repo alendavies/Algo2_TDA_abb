@@ -182,61 +182,75 @@ void abb_destruir_todo(abb_t *arbol, void (*destructor)(void *))
 	free(arbol);
 }
 
-void abb_con_cada_elemento_inorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
+bool abb_con_cada_elemento_inorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
 {
 	if(!raiz){
-		return;
+		return false;
 	}
 	if(raiz->izquierda){
-		abb_con_cada_elemento_inorden(raiz->izquierda, funcion, aux, cantidad);
+		if(!abb_con_cada_elemento_inorden(raiz->izquierda, funcion, aux, cantidad))
+			return false;
 	}
 
-	funcion(raiz->elemento, aux);
+	if(!funcion(raiz->elemento, aux)){
+		return false;
+	}
 	(*cantidad)++;
 	
 	if(raiz->derecha){
-		abb_con_cada_elemento_inorden(raiz->derecha, funcion, aux, cantidad);
+		if(!abb_con_cada_elemento_inorden(raiz->derecha, funcion, aux, cantidad))
+			return false;
 	}
+	return true;
 }
 
-void abb_con_cada_elemento_preorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
+bool abb_con_cada_elemento_preorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
 {
 	if(!raiz){
-		return;
+		return false;
 	}
 
-	funcion(raiz->elemento, aux);
+	if(!funcion(raiz->elemento, aux)){
+		return false;
+	}
 	(*cantidad)++;
 
 	if(raiz->izquierda){
-		abb_con_cada_elemento_preorden(raiz->izquierda, funcion, aux, cantidad);
+		if(!abb_con_cada_elemento_preorden(raiz->izquierda, funcion, aux, cantidad))
+			return false;
 	}
 	
 	if(raiz->derecha){
-		abb_con_cada_elemento_preorden(raiz->derecha, funcion, aux, cantidad);
+		if(!abb_con_cada_elemento_preorden(raiz->derecha, funcion, aux, cantidad))
+			return false;
 	}
+	return true;
 }
 
-void abb_con_cada_elemento_postorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
+bool abb_con_cada_elemento_postorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
 {
 	if(!raiz){
-		return;
+		return false;
 	}
 	if(raiz->izquierda){
-		abb_con_cada_elemento_postorden(raiz->izquierda, funcion, aux, cantidad);
+		if(!abb_con_cada_elemento_postorden(raiz->izquierda, funcion, aux, cantidad))
+			return false;
 	}
 
 	if(raiz->derecha){
-		abb_con_cada_elemento_postorden(raiz->derecha, funcion, aux, cantidad);
+		if(!abb_con_cada_elemento_postorden(raiz->derecha, funcion, aux, cantidad))
+			return false;
 	}
-
-	funcion(raiz->elemento, aux);
+	if(!funcion(raiz->elemento, aux)){
+		return false;
+	}
 	(*cantidad)++;
+	return true;
 }
 
 size_t abb_con_cada_elemento(abb_t *arbol, abb_recorrido recorrido, bool (*funcion)(void *, void *), void *aux)
 {
-	if(!arbol || !funcion){
+	if(!arbol || !funcion || abb_vacio(arbol)){
 		return 0;
 	}
 	size_t cantidad = 0;
@@ -306,7 +320,7 @@ void abb_recorrer_postorden(nodo_abb_t *raiz, void **array, size_t tamanio_array
 
 size_t abb_recorrer(abb_t *arbol, abb_recorrido recorrido, void **array, size_t tamanio_array)
 {
-	if(!arbol){
+	if(!arbol || abb_vacio(arbol)){
 		return 0;
 	}
 	size_t tope = 0;

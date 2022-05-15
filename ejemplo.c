@@ -140,7 +140,7 @@ int main()
 		printf("%i ", elementos[i]->clave);
 	printf("\n");
 
-	printf("\n\nInserto mas valores y pruebo el iterador interno\n\n");
+	printf("\nInserto mas valores y pruebo el iterador interno\n\n");
 	abb_insertar(arbol, crear_cosa(15));
 	abb_insertar(arbol, crear_cosa(0));
 	abb_insertar(arbol, crear_cosa(9));

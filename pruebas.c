@@ -121,6 +121,11 @@ void quito_un_elemento_y_lo_devuelvo()
 	pa2m_afirmar(abb_quitar(abb, &a) == NULL, "No puedo quitar un elemento en un arbol vacío.");
 
 	abb_insertar(abb, &a);
+
+	pa2m_afirmar(*(int *)abb_quitar(abb, &a) == a, "Quito el unico nodo del arbol y lo devuelve.");
+	pa2m_afirmar(abb->tamanio == 0, "El arbol queda vacio.");
+
+	abb_insertar(abb, &a);
 	abb_insertar(abb, &b);
 	abb_insertar(abb, &c);
 	abb_insertar(abb, &d);
@@ -236,9 +241,9 @@ void itera_hasta_encontrar_un_elemento_y_corta()
 	abb_insertar(abb, &g);
 	abb_insertar(abb, &h);
 
-	pa2m_afirmar(abb_con_cada_elemento(abb, INORDEN, encontro_elemento, NULL) == 4, "Itero inorden hasta encontrar el elemento.");
-	pa2m_afirmar(abb_con_cada_elemento(abb, PREORDEN, encontro_elemento, NULL) == 3, "Itero preorden hasta encontrar el elemento.");
-	pa2m_afirmar(abb_con_cada_elemento(abb, POSTORDEN, encontro_elemento, NULL) == 6, "Itero postorden hasta encontrar el elemento.");
+	pa2m_afirmar(abb_con_cada_elemento(abb, INORDEN, encontro_elemento, NULL) == 5, "Itero inorden hasta encontrar el elemento.");
+	pa2m_afirmar(abb_con_cada_elemento(abb, PREORDEN, encontro_elemento, NULL) == 4, "Itero preorden hasta encontrar el elemento.");
+	pa2m_afirmar(abb_con_cada_elemento(abb, POSTORDEN, encontro_elemento, NULL) == 7, "Itero postorden hasta encontrar el elemento.");
 
 	abb_destruir(abb);
 }

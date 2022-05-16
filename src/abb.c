@@ -293,11 +293,11 @@ void abb_recorrer_preorden(nodo_abb_t *raiz, void **array, size_t tamanio_array,
 	(*cant_elementos)++;
 
 	if(raiz->izquierda){
-		abb_recorrer_inorden(raiz->izquierda, array, tamanio_array, cant_elementos);
+		abb_recorrer_preorden(raiz->izquierda, array, tamanio_array, cant_elementos);
 	}
 
 	if(raiz->derecha){
-		abb_recorrer_inorden(raiz->derecha, array, tamanio_array, cant_elementos);
+		abb_recorrer_preorden(raiz->derecha, array, tamanio_array, cant_elementos);
 	}
 }
 
@@ -308,10 +308,10 @@ void abb_recorrer_postorden(nodo_abb_t *raiz, void **array, size_t tamanio_array
 	}
 
 	if(raiz->izquierda){
-		abb_recorrer_inorden(raiz->izquierda, array, tamanio_array, cant_elementos);
+		abb_recorrer_postorden(raiz->izquierda, array, tamanio_array, cant_elementos);
 	}
 	if(raiz->derecha){
-		abb_recorrer_inorden(raiz->derecha, array, tamanio_array, cant_elementos);
+		abb_recorrer_postorden(raiz->derecha, array, tamanio_array, cant_elementos);
 	}
 
 	array[*cant_elementos] = raiz->elemento;

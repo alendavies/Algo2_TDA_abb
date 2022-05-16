@@ -185,17 +185,17 @@ void abb_destruir_todo(abb_t *arbol, void (*destructor)(void *))
 bool abb_con_cada_elemento_inorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
 {
 	if(!raiz){
-		return false;
+		return true;
 	}
 	if(raiz->izquierda){
 		if(!abb_con_cada_elemento_inorden(raiz->izquierda, funcion, aux, cantidad))
 			return false;
 	}
 
+	(*cantidad)++;
 	if(!funcion(raiz->elemento, aux)){
 		return false;
 	}
-	(*cantidad)++;
 	
 	if(raiz->derecha){
 		if(!abb_con_cada_elemento_inorden(raiz->derecha, funcion, aux, cantidad))
@@ -207,13 +207,13 @@ bool abb_con_cada_elemento_inorden(nodo_abb_t *raiz, bool (*funcion)(void *, voi
 bool abb_con_cada_elemento_preorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
 {
 	if(!raiz){
-		return false;
+		return true;
 	}
 
+	(*cantidad)++;
 	if(!funcion(raiz->elemento, aux)){
 		return false;
 	}
-	(*cantidad)++;
 
 	if(raiz->izquierda){
 		if(!abb_con_cada_elemento_preorden(raiz->izquierda, funcion, aux, cantidad))
@@ -230,7 +230,7 @@ bool abb_con_cada_elemento_preorden(nodo_abb_t *raiz, bool (*funcion)(void *, vo
 bool abb_con_cada_elemento_postorden(nodo_abb_t *raiz, bool (*funcion)(void *, void *), void *aux, size_t *cantidad)
 {
 	if(!raiz){
-		return false;
+		return true;
 	}
 	if(raiz->izquierda){
 		if(!abb_con_cada_elemento_postorden(raiz->izquierda, funcion, aux, cantidad))
@@ -241,10 +241,10 @@ bool abb_con_cada_elemento_postorden(nodo_abb_t *raiz, bool (*funcion)(void *, v
 		if(!abb_con_cada_elemento_postorden(raiz->derecha, funcion, aux, cantidad))
 			return false;
 	}
+	(*cantidad)++;
 	if(!funcion(raiz->elemento, aux)){
 		return false;
 	}
-	(*cantidad)++;
 	return true;
 }
 
@@ -268,7 +268,7 @@ size_t abb_con_cada_elemento(abb_t *arbol, abb_recorrido recorrido, bool (*funci
 
 void abb_recorrer_inorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, size_t *cant_elementos)
 {
-	if(!raiz || *cant_elementos > tamanio_array){
+	if(!raiz || *cant_elementos == tamanio_array){
 		return;
 	}
 	if(raiz->izquierda){
@@ -285,7 +285,7 @@ void abb_recorrer_inorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, 
 
 void abb_recorrer_preorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, size_t *cant_elementos)
 {
-	if(!raiz || *cant_elementos > tamanio_array){
+	if(!raiz || *cant_elementos == tamanio_array){
 		return;
 	}
 
@@ -303,7 +303,7 @@ void abb_recorrer_preorden(nodo_abb_t *raiz, void **array, size_t tamanio_array,
 
 void abb_recorrer_postorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, size_t *cant_elementos)
 {
-	if(!raiz || *cant_elementos > tamanio_array){
+	if(!raiz || *cant_elementos == tamanio_array){
 		return;
 	}
 

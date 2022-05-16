@@ -189,7 +189,7 @@ void recorro_el_arbol_y_devuelve_la_cantidad_esperada()
 
 	pa2m_afirmar(recorrido_esperado, "Recorro el arbol inorden y el orden es el esperado.");
 
-	int preorden[] = {10, 7, 8, 9, 15, 20, 25};
+	int preorden[] = {10, 8, 7, 9, 20, 15, 25};
 
 	pa2m_afirmar(abb_recorrer(abb, INORDEN, (void **)elementos, 10) == 7, "Recorro el arbol inorden y me devuelve la cantidad de elementos recorridos.");
 
@@ -204,7 +204,7 @@ void recorro_el_arbol_y_devuelve_la_cantidad_esperada()
 	}
 	pa2m_afirmar(recorrido_esperado, "Recorro el arbol preorden y el orden es el esperado.");
 
-	int postorden[] = {7, 8, 9, 15, 20, 25, 10};
+	int postorden[] = {7, 9, 8, 15, 25, 20, 10};
 
 	pa2m_afirmar(abb_recorrer(abb, POSTORDEN, (void **)elementos, 10) == 7, "Recorro el arbol postorden y me devuelve la cantidad de elementos recorridos.");
 

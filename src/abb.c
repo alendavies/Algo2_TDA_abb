@@ -268,7 +268,7 @@ size_t abb_con_cada_elemento(abb_t *arbol, abb_recorrido recorrido, bool (*funci
 
 void abb_recorrer_inorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, size_t *cant_elementos)
 {
-	if(!raiz || *cant_elementos == tamanio_array){
+	if(!raiz || *cant_elementos > tamanio_array){
 		return;
 	}
 	if(raiz->izquierda){
@@ -285,7 +285,7 @@ void abb_recorrer_inorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, 
 
 void abb_recorrer_preorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, size_t *cant_elementos)
 {
-	if(!raiz || *cant_elementos == tamanio_array){
+	if(!raiz || *cant_elementos > tamanio_array){
 		return;
 	}
 
@@ -303,7 +303,7 @@ void abb_recorrer_preorden(nodo_abb_t *raiz, void **array, size_t tamanio_array,
 
 void abb_recorrer_postorden(nodo_abb_t *raiz, void **array, size_t tamanio_array, size_t *cant_elementos)
 {
-	if(!raiz || *cant_elementos == tamanio_array){
+	if(!raiz || *cant_elementos > tamanio_array){
 		return;
 	}
 
